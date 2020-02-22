@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
+    /**
+     * タスク一覧
+     * @param Folder $folder
+     * @return \Illuminate\View\View
+     */
     public function index(Folder $folder)
     {
-
-
-        if (Auth::user()->id !== $folder->user_id) {
-            abort(403);
-        }
     
         // すべてのフォルダを取得する
         //$folders = Folder::all();
@@ -37,7 +37,7 @@ class TaskController extends Controller
     }
 
     /**
-     * GET /folders/{id}/tasks/create
+     * GET /folders/{folder}/tasks/create
      */
     public function showCreateForm(Folder $folder)
     {
@@ -48,8 +48,7 @@ class TaskController extends Controller
 
     public function create(Folder $folder, CreateTask $request)
     {
-        $current_folder = Folder::find($id);
-
+        
         $task = new Task();
         $task->title = $request->title;
         $task->due_date = $request->due_date;
@@ -62,7 +61,7 @@ class TaskController extends Controller
     }
 
     /**
-     * GET /folders/{id}/tasks/{task_id}/edit
+     * GET /folders/{folder}/tasks/{task}/edit
      */
     public function showEditForm(Folder $folder, Task $task)
     {
