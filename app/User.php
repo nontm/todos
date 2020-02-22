@@ -1,6 +1,8 @@
 <?php
 
 namespace App;
+use App\Mail\ResetPassword; 
+use Illuminate\Support\Facades\Mail; 
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -36,4 +38,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function folders()
+    {
+        return $this->hasMany('App\Folder');
+    } 
+
+    /**
+     * ★ パスワード再設定メールを送信する
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        Mail::to($this)->send(new ResetPassword($token));
+    }
 }
